@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34301.259
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArrayTest2", "ArrayTest2.vcxproj", "{996465EF-AB1C-483E-A14A-E463A5ED51ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{996465EF-AB1C-483E-A14A-E463A5ED51ED}.Debug|x64.ActiveCfg = Debug|x64
+		{996465EF-AB1C-483E-A14A-E463A5ED51ED}.Debug|x64.Build.0 = Debug|x64
+		{996465EF-AB1C-483E-A14A-E463A5ED51ED}.Debug|x86.ActiveCfg = Debug|Win32
+		{996465EF-AB1C-483E-A14A-E463A5ED51ED}.Debug|x86.Build.0 = Debug|Win32
+		{996465EF-AB1C-483E-A14A-E463A5ED51ED}.Release|x64.ActiveCfg = Release|x64
+		{996465EF-AB1C-483E-A14A-E463A5ED51ED}.Release|x64.Build.0 = Release|x64
+		{996465EF-AB1C-483E-A14A-E463A5ED51ED}.Release|x86.ActiveCfg = Release|Win32
+		{996465EF-AB1C-483E-A14A-E463A5ED51ED}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FCC4F89F-7DFB-4FA1-B259-D768D7005C8C}
+	EndGlobalSection
+EndGlobal
