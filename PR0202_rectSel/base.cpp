@@ -51,10 +51,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
     static int circlePaint[4][8];
     static int clickCount = 0;
 
-
-    static int clickedRectX;
-    static int clickedRectY;
-
     switch (message) {
     case WM_CREATE:
 
@@ -85,36 +81,25 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
         //rectArr[my / 100][mx / 100] = (mx / 100) * 100;
 
-        clickedRectX = mx / BSIZE;
-        clickedRectY = my / BSIZE;
 
-        // 사각형 내부에만 원 그리기
-        if (clickedRectX >= 0 && clickedRectX < 8 && clickedRectY >= 0 && clickedRectY < 4) {
-            rectArr[clickedRectY][clickedRectX] = clickedRectX * BSIZE;
-            rectArr[clickedRectY][clickedRectX] = clickedRectY * BSIZE;
-        }
+        clickCount++;
 
-        if (clickCount == 0) {
+        if (clickCount % 2 == 1)
             circlePaint[my / 100][mx / 100] = 1;
-            clickCount = 1;
-        }
-        else {
+        else
             circlePaint[my / 100][mx / 100] = 2;
-            clickCount = 0;
-        }
-
 
         blackPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
         redPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
         bluePen = CreatePen(PS_SOLID, 1, RGB(0, 0, 255));
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 8; i++) {
                 if (circlePaint[i][j] == 1)
                     SelectObject(hdc, redPen);
                 else if (circlePaint[i][j] == 2)
                     SelectObject(hdc, bluePen);
-                Ellipse(hdc, rectArrX[i][j], rectArrY[i][j], rectArrX[i][j] + 100, rectArrY[i][j] + 100);
+                Ellipse(hdc, rectArr[i][j].left, rectArr[i][j].top, rectArr[i][j].right, rectArr[i][j].bottom);
             }
         }
 

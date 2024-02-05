@@ -1,6 +1,5 @@
 #include <windows.h>
 #include <iostream>
-#include <math.h>
 #include <windowsx.h>
 
 #define BSIZE 100
@@ -54,11 +53,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
     static int clickedRectX;
     static int clickedRectY;
 
-
     switch (message) {
     case WM_CREATE:
 
-        return 0;
+        break;
 
     case WM_PAINT:
         hdc = BeginPaint(hwnd, &ps);
@@ -76,7 +74,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             }
         }
         EndPaint(hwnd, &ps);
-        return 0;
+        break;
 
     case WM_LBUTTONDOWN:
         hdc = GetDC(hwnd);
@@ -86,9 +84,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         clickedRectX = mx / BSIZE;
         clickedRectY = my / BSIZE;
 
-
-        // 사각형 내부에만 원 그리기
-        if (clickedRectX >= 0 && clickedRectX < 8 && clickedRectY >= 0 && clickedRectY < 4) {
+        // 마우스 클릭한 좌표가 표 안에 있고, 해당 좌표에 원이 그려져있지 않은 경우에만 처리
+        if (clickedRectX >= 0 && clickedRectX < 8 && clickedRectY >= 0 && clickedRectY < 4 && circlePaint[clickedRectX][clickedRectY] == 0) {
             clickCount++;
 
             if (clickCount % 2 == 1)
@@ -122,11 +119,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         ReleaseDC(hwnd, hdc);
 
         //InvalidateRgn(hwnd, NULL, TRUE);
-        return 0;
+        break;
 
     case WM_DESTROY:
         PostQuitMessage(0);
-        return 0;
+        break;
     }
 
     return DefWindowProc(hwnd, message, wParam, lParam);
