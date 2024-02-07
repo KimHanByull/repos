@@ -41,9 +41,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
     HDC hdc;
     PAINTSTRUCT ps;
-    POINT pt{};
 
-    HPEN redPen, blackPen, bluePen;
+    HPEN redPen, bluePen;
 
     static int mx, my;
     static RECT rectArr[8][4];
@@ -93,7 +92,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             else
                 circlePaint[clickedRectX][clickedRectY] = 2;
 
-            blackPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
             redPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
             bluePen = CreatePen(PS_SOLID, 1, RGB(0, 0, 255));
 
@@ -113,7 +111,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             // 생성한 펜 해제
             DeleteObject(redPen);
             DeleteObject(bluePen);
-            DeleteObject(blackPen);
         }
 
         ReleaseDC(hwnd, hdc);

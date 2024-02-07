@@ -142,6 +142,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			SelectObject(hdc, oldPen);
 			DeleteObject(hPen);
 		}
+		//사각형 클릭시 각 모서리에 작은 사각형 출력
 		if (selector == true)
 		{
 			Rectangle(hdc, OBJList[currentSelect].fx - 5, OBJList[currentSelect].fy - 5, OBJList[currentSelect].fx, OBJList[currentSelect].fy);
@@ -151,10 +152,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		}
 		EndPaint(hwnd, &ps);
 		break;
+
+	//메뉴 선택에 따른 기능 구현
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
 
+		//파일 열어오기 기능
 		case ID_FileOpen:
 			memset(&OFN, 0, sizeof(OPENFILENAME));
 			OFN.lStructSize = sizeof(OPENFILENAME);
@@ -164,13 +168,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			OFN.nMaxFile = 100;
 			OFN.lpstrInitialDir = TEXT(".");
 			if (GetOpenFileName(&OFN) != 0) {
-				/*_stprintf_s(str, TEXT("%s 파일을 열겠습니까?"), OFN.lpstrFile);
-				MessageBox(hwnd, str, TEXT("열기 선택"), MB_OK);*/
+				_stprintf_s(str, TEXT("%s 파일을 열겠습니까?"), OFN.lpstrFile);
+				MessageBox(hwnd, str, TEXT("열기 선택"), MB_OK);
 				OutFromFile(OFN.lpstrFile, hwnd);
 			}
 			break;
 
 
+		//저장 기능
 		case ID_FileSave:
 			memset(&SFN, 0, sizeof(OPENFILENAME));
 			SFN.lStructSize = sizeof(OPENFILENAME);
@@ -186,6 +191,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			break;
 
 
+		//사각형 선택 기능
 		case ID_SELECT:
 			if (selector == true)
 			{
@@ -195,15 +201,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			else selector = true;
 			break;
 		
+		//직선 그리기 기능
 		case ID_Line:
 			currentShape = 'L';
 			break;
+
+		//원 그리기 기능
 		case ID_Ellipse:
 			currentShape = 'E';
 			break;
+
+		//사각형 그리기 기능
 		case ID_Rectangle:
 			currentShape = 'R';
 			break;
+
+		//선 색 지정 기능
 		case ID_LineColor:
 			for (int i = 0; i < 16; i++)
 			{
@@ -221,6 +234,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				InvalidateRgn(hwnd, NULL, TRUE);
 			}
 			break;
+
+		//면 색 지정 기능
 		case ID_FaceColor:
 			for (int i = 0; i < 16; i++)
 			{

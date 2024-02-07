@@ -109,4 +109,6 @@ void CChildView::OnRButtonDown(UINT nFlags, CPoint point)
 	cRList.AddTail(point);
 	cList.AddTail(rect);
 	Invalidate(FALSE);
+
+	BOOL
 }
