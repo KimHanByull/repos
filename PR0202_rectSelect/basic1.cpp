@@ -63,7 +63,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 8; i++) {
                 rectArr[i][j] = { i * BSIZE, j * BSIZE, (i + 1) * BSIZE, (j + 1) * BSIZE };
-                circlePaint[i][j] = 0;
             }
         }
 
@@ -83,7 +82,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         clickedRectX = mx / BSIZE;
         clickedRectY = my / BSIZE;
 
-        // 마우스 클릭한 좌표가 표 안에 있고, 해당 좌표에 원이 그려져있지 않은 경우에만 처리
+        // 마우스 클릭한 좌표가 표 안에 있고, 해당 좌표에 원이 그려져있지 않은 경우에만 그리기
         if (clickedRectX >= 0 && clickedRectX < 8 && clickedRectY >= 0 && clickedRectY < 4 && circlePaint[clickedRectX][clickedRectY] == 0) {
             clickCount++;
 

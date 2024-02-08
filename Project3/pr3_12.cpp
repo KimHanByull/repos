@@ -108,14 +108,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             pt.x = GET_X_LPARAM(lParam);
             pt.y = GET_Y_LPARAM(lParam);
 
-			//for (int i = 0; i < 8; i++) {
-			//	if (InRectangle(pt.x, pt.y, rectArr[i].left + BSIZE / 2, rectArr[i].top + BSIZE / 2)) {
-			//		clickedRect = i;
-			//		// 전체 윈도우를 다시 그리도록 강제로 WM_PAINT 메시지 전송
-			//		InvalidateRect(hwnd, NULL, TRUE);
-			//		break;
-			//	}
-			//}
+			for (int i = 0; i < 8; i++) {
+				if (InRectangle(pt.x, pt.y, rectArr[i].left + BSIZE / 2, rectArr[i].top + BSIZE / 2)) {
+					clickedRect = i;
+					// 전체 윈도우를 다시 그리도록 강제로 WM_PAINT 메시지 전송
+					InvalidateRect(hwnd, NULL, TRUE);
+					break;
+				}
+			}
 			if (InRectangle(pt.x, pt.y, rectArr[5].left, rectArr[5].top)) 
 				Selection = TRUE;
 			InvalidateRgn(hwnd, NULL, TRUE);
