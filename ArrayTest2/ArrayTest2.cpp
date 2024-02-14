@@ -26,6 +26,7 @@ struct Point3D {
     Point3D(int x0, int y0, int z0) { x = x0; y = y0; z = z0; }
 };
 
+=======
 struct Point3DColor {
     int x, y, z;
     COLORREF color;
@@ -37,7 +38,6 @@ struct Point3DColor {
         color = RGB(x, y, z);
     }
 };
-
 
 int main()
 {
@@ -84,8 +84,6 @@ int main()
                 _tprintf(_T("Color: %d, R: %d, G : %d, B : %d \n"), ptc.color ,GetRValue(ptc.color), GetGValue(ptc.color), GetBValue(ptc.color));
               
             }
-
-
 
         }
     }
