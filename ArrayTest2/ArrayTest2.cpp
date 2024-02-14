@@ -26,6 +26,18 @@ struct Point3D {
     Point3D(int x0, int y0, int z0) { x = x0; y = y0; z = z0; }
 };
 
+=======
+struct Point3DColor {
+    int x, y, z;
+    COLORREF color;
+
+    Point3DColor() {}
+
+    Point3DColor(int x0, int y0, int z0) {
+        x = x0; y = y0; z = z0;
+        color = RGB(x, y, z);
+    }
+};
 
 int main()
 {
@@ -57,6 +69,22 @@ int main()
                 Point3D pt = array[i];
                 _tprintf(_T("%d, %d, %d\n"), pt.x, pt.y, pt.z);
             }
+
+            CArray<Point3DColor, Point3DColor&> arrayColor;
+            arrayColor.SetSize(5);
+
+            for (int i = 0; i < 5; i++) {
+                Point3DColor ptc(i, i * 10, i * 100);
+                arrayColor[i] = ptc;
+            }
+
+            for (int i = 0; i < 5; i++) {
+                Point3DColor ptc = arrayColor[i];
+                ptc.color = RGB(ptc.x, ptc.y, ptc.z);
+                _tprintf(_T("Color: %d, R: %d, G : %d, B : %d \n"), ptc.color ,GetRValue(ptc.color), GetGValue(ptc.color), GetBValue(ptc.color));
+              
+            }
+
         }
     }
     else

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34301.259
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PR0202_rectSel", "PR0202_rectSel.vcxproj", "{576B0F95-9B02-4A53-AF08-0D6165F6F4BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{576B0F95-9B02-4A53-AF08-0D6165F6F4BF}.Debug|x64.ActiveCfg = Debug|x64
+		{576B0F95-9B02-4A53-AF08-0D6165F6F4BF}.Debug|x64.Build.0 = Debug|x64
+		{576B0F95-9B02-4A53-AF08-0D6165F6F4BF}.Debug|x86.ActiveCfg = Debug|Win32
+		{576B0F95-9B02-4A53-AF08-0D6165F6F4BF}.Debug|x86.Build.0 = Debug|Win32
+		{576B0F95-9B02-4A53-AF08-0D6165F6F4BF}.Release|x64.ActiveCfg = Release|x64
+		{576B0F95-9B02-4A53-AF08-0D6165F6F4BF}.Release|x64.Build.0 = Release|x64
+		{576B0F95-9B02-4A53-AF08-0D6165F6F4BF}.Release|x86.ActiveCfg = Release|Win32
+		{576B0F95-9B02-4A53-AF08-0D6165F6F4BF}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8AA45CEB-D4BA-4366-8766-56B43E53D6E4}
+	EndGlobalSection
+EndGlobal
