@@ -317,7 +317,9 @@ BOOL CALLBACK Calcu(HWND hDlg, UINT iMsg,
 
 
 			num1 = result;  // 계산 결과를 num1에 저장
-			funcCount = 0; 
+			func = ' ';
+			funcCount = 0;
+			count = 0;
 			break;
 
 		case IDCANCEL:

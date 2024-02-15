@@ -55,7 +55,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	return (int)msg.wParam;
 }
 
-HWND ChildHwnd[2];
+HWND ChildHwnd[100];
 static int num = 0;
 LRESULT CALLBACK FrameWndProc(HWND hwnd, UINT iMsg,
 	WPARAM wParam, LPARAM lParam)
@@ -105,6 +105,8 @@ LRESULT CALLBACK FrameWndProc(HWND hwnd, UINT iMsg,
 			hwndChild = (HWND)SendMessage(hwndClient,
 				WM_MDICREATE, 0,
 				(LPARAM)(LPMDICREATESTRUCT)&mdicreate);
+			ChildHwnd[num] = hwndChild;
+			//num 값 비교하여 같을 경우에만 출력
 			return 0;
 		case ID_EXIT:
 			PostQuitMessage(0);
@@ -123,7 +125,7 @@ LRESULT CALLBACK ChildWndProc(HWND hwnd, UINT iMsg,
 	WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
-	static TCHAR content[10][100];    // 입력된 문장을 저장하기 위함
+	static TCHAR content[100][10][100];    // 입력된 문장을 저장하기 위함
 	static int count;
 	static int enterCount = 0, yPos = 0;
 	RECT rt = { 0, 0, 1000, 1000 };
@@ -136,35 +138,37 @@ LRESULT CALLBACK ChildWndProc(HWND hwnd, UINT iMsg,
 	case WM_PAINT:
 		hdc = BeginPaint(hwnd, &ps);
 		for (int i = 0; i <= enterCount; i++) {
-			DrawText(hdc, content[i], _tcslen(content[i]), &rt, DT_TOP | DT_LEFT);
+			DrawText(hdc, content[num][i], _tcslen(content[num][i]), &rt, DT_TOP | DT_LEFT);
 			rt.top += 20;  // 행 간격 조절
 		}
 		EndPaint(hwnd, &ps);
 		break;
 	case WM_CHAR:
 		hdc = GetDC(hwnd);
-		if (wParam == VK_BACK && count > 0) {
-			count--;
-		}
-		else {
-			if (enterCount < 9 && count < 99) {
-				content[enterCount][count++] = wParam;
-				if (count >= 99) {
-					// count가 99에 도달하면 다음 행으로 이동
-					enterCount++;
-					count = 0;
-					if (enterCount >= 10) {
-						// 행이 10을 넘어가면 마지막 행을 초기화하고 이전 행들을 한 칸씩 위로 이동
-						_tcscpy_s(content[9], _T(""));
-						for (int i = 0; i < 9; i++) {
-							_tcscpy_s(content[i], content[i + 1]);
+		if (hwnd == ChildHwnd[num]) {
+			if (wParam == VK_BACK && count > 0) {
+				count--;
+			}
+			else {
+				if (enterCount < 9 && count < 99) {
+					content[num][enterCount][count++] = wParam;
+					if (count >= 99) {
+						// count가 99에 도달하면 다음 행으로 이동
+						enterCount++;
+						count = 0;
+						if (enterCount >= 10) {
+							// 행이 10을 넘어가면 마지막 행을 초기화하고 이전 행들을 한 칸씩 위로 이동
+							_tcscpy_s(content[num][9], _T(""));
+							for (int i = 0; i < 9; i++) {
+								_tcscpy_s(content[num][i], content[num][i + 1]);
+							}
+							enterCount = 9;
 						}
-						enterCount = 9;
 					}
 				}
 			}
 		}
-		content[enterCount][count] = NULL;
+		content[num][enterCount][count] = NULL;
 		InvalidateRgn(hwnd, NULL, TRUE);
 		break;
 	case WM_KEYDOWN:
@@ -174,9 +178,9 @@ LRESULT CALLBACK ChildWndProc(HWND hwnd, UINT iMsg,
 			count = 0;
 			if (enterCount >= 10) {
 				// 행이 10을 넘어가면 마지막 행을 초기화하고 이전 행들을 한 칸씩 위로 이동
-				_tcscpy_s(content[9], _T(""));
+				_tcscpy_s(content[num][9], _T(""));
 				for (int i = 0; i < 9; i++) {
-					_tcscpy_s(content[i], content[i + 1]);
+					_tcscpy_s(content[num][i], content[num][i + 1]);
 				}
 				enterCount = 9;
 			}
