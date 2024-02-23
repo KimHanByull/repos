@@ -45,16 +45,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
     //사각형 좌표    
     static RECT rectTop = { 300, 100, 500, 300 };
+    /*
     static RECT rectLeft = { 100, 300, 300, 500 };
     static RECT rectRight = { 500, 300, 700, 500 };
     static RECT rectBottom = { 300, 500, 500, 700 };
-
+    */
     //VK의 현 상태를 저장할 변수(눌렸을 경우 TRUE)
+
     static bool isUpKeyPressed = false;
+    /*
     static bool isLeftKeyPressed = false;
     static bool isRightKeyPressed = false;
     static bool isDownKeyPressed = false;
-
+    */
     HDC hdc;
     PAINTSTRUCT ps;
     HBRUSH hbrush, oldbrush;
@@ -69,13 +72,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hdc = BeginPaint(hwnd, &ps);
         Rectangle(hdc, rectTop.left, rectTop.top, rectTop.right, rectTop.bottom);
         DrawText(hdc, TEXT("위쪽"), 2, &rectTop, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+        /*
         Rectangle(hdc, rectLeft.left, rectLeft.top, rectLeft.right, rectLeft.bottom);
         DrawText(hdc, TEXT("왼쪽"), 2, &rectLeft, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
         Rectangle(hdc, rectRight.left, rectRight.top, rectRight.right, rectRight.bottom);
         DrawText(hdc, TEXT("오른쪽"), 3, &rectRight, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
         Rectangle(hdc, rectBottom.left, rectBottom.top, rectBottom.right, rectBottom.bottom);
         DrawText(hdc, TEXT("아래쪽"), 3, &rectBottom, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
-
+        */
 
         // VK_UP 키가 눌렸을 때 위에 생성한 변수 값이 TRUE일 때만 빨간색으로 사각형을 그림
         if (isUpKeyPressed) {
@@ -85,7 +89,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             SelectObject(hdc, oldbrush);
             DeleteObject(hbrush);
         }
-
+        /*
         // VK_LEFT 키가 눌렸을 때 위에 생성한 변수 값이 TRUE일 때만 빨간색으로 사각형을 그림
         if (isLeftKeyPressed) {
             hbrush = CreateSolidBrush(RGB(255, 0, 0));
@@ -112,7 +116,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             SelectObject(hdc, oldbrush);
             DeleteObject(hbrush);
         }
-
+        */
         EndPaint(hwnd, &ps);
         return 0;
 
@@ -124,7 +128,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             isUpKeyPressed = true;
             InvalidateRect(hwnd, &rectTop, TRUE);
             return 0;
-
+            /*
         case VK_LEFT:
             isLeftKeyPressed = true;
             InvalidateRect(hwnd, &rectLeft, TRUE);
@@ -140,7 +144,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             InvalidateRect(hwnd, &rectBottom, TRUE);
             return 0;
         }
-
+        */
     //방향키 눌린게 풀렸을 경우 FALSE로 다시 변경하여 빨간 사각형 지우기 위함
     case WM_KEYUP:
         switch (wParam) {
@@ -148,7 +152,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             isUpKeyPressed = false;
             InvalidateRect(hwnd, &rectTop, TRUE);
             return 0;
-
+            /*
         case VK_LEFT:
             isLeftKeyPressed = false;
             InvalidateRect(hwnd, &rectLeft, TRUE);
@@ -163,7 +167,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
             isDownKeyPressed = false;
             InvalidateRect(hwnd, &rectBottom, TRUE);
             return 0;
-
+            */
 
         }
     case WM_DESTROY:

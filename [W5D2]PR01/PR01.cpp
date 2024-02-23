@@ -34,7 +34,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	RegisterClass(&wndclass);
 	hwnd = CreateWindow(
 		TEXT("Window Class Name"),
-		TEXT("Main Window Title"),
+		TEXT("김한별의 7번째 윈도우"),
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
@@ -55,8 +55,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	return (int)msg.wParam;
 }
 
-HWND ChildHwnd[100];
-static int num = 0;
+HWND ActivatedHwndChild;
+
+int selection;
+int childCount;
+
+static struct Child {
+	HWND hwndChild;
+	TCHAR str[10][100] = { '\0', };
+	int count = 0, line = 0;
+};
+
+Child child[10];
+
+
 LRESULT CALLBACK FrameWndProc(HWND hwnd, UINT iMsg,
 	WPARAM wParam, LPARAM lParam)
 {
@@ -64,8 +76,6 @@ LRESULT CALLBACK FrameWndProc(HWND hwnd, UINT iMsg,
 	static HWND hwndClient;
 	CLIENTCREATESTRUCT clientcreate;
 	MDICREATESTRUCT mdicreate;
-	HWND hwndChild;
-
 
 	TCHAR str[30];		//자식 윈도우가 증가함에 따라 번호 붙이기 위함
 
@@ -93,7 +103,7 @@ LRESULT CALLBACK FrameWndProc(HWND hwnd, UINT iMsg,
 		case ID_NEWFILE:
 			mdicreate.szClass =
 				_T("Child Window Class Name");
-			_stprintf_s(str, 30, _T("%d번 Child Window"), ++num);
+			_stprintf_s(str, 30, _T("%d번 Child Window"), childCount);
 			mdicreate.szTitle = str;
 			mdicreate.hOwner = hInst;
 			mdicreate.x = CW_USEDEFAULT;
@@ -102,17 +112,26 @@ LRESULT CALLBACK FrameWndProc(HWND hwnd, UINT iMsg,
 			mdicreate.cy = CW_USEDEFAULT;
 			mdicreate.style = 0;
 			mdicreate.lParam = 0;
-			hwndChild = (HWND)SendMessage(hwndClient,
+			child[childCount++].hwndChild = (HWND)SendMessage(hwndClient,
 				WM_MDICREATE, 0,
 				(LPARAM)(LPMDICREATESTRUCT)&mdicreate);
-			ChildHwnd[num] = hwndChild;
-			//num 값 비교하여 같을 경우에만 출력
 			return 0;
 		case ID_EXIT:
 			PostQuitMessage(0);
 			return 0;
 		}
 		break;
+	case WM_MOUSEACTIVATE:
+		ActivatedHwndChild = (HWND)SendMessage(hwndClient, WM_MDIGETACTIVE, 0, 0);
+		selection = -1; // 초기화
+		for (int i = 0; i < childCount; i++) {
+			if (ActivatedHwndChild == child[i].hwndChild) {
+				selection = i;
+				break;
+			}
+		}
+		break;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
@@ -124,68 +143,60 @@ LRESULT CALLBACK FrameWndProc(HWND hwnd, UINT iMsg,
 LRESULT CALLBACK ChildWndProc(HWND hwnd, UINT iMsg,
 	WPARAM wParam, LPARAM lParam)
 {
-	PAINTSTRUCT ps;
-	static TCHAR content[100][10][100];    // 입력된 문장을 저장하기 위함
-	static int count;
-	static int enterCount = 0, yPos = 0;
-	RECT rt = { 0, 0, 1000, 1000 };
-
 	HDC hdc;
+	PAINTSTRUCT ps;
+	TCHAR tmp[20];
 	switch (iMsg)
 	{
 	case WM_CREATE:
+		_stprintf_s(tmp, 20, _T("%d"), wParam);
 		break;
 	case WM_PAINT:
-		hdc = BeginPaint(hwnd, &ps);
-		for (int i = 0; i <= enterCount; i++) {
-			DrawText(hdc, content[num][i], _tcslen(content[num][i]), &rt, DT_TOP | DT_LEFT);
-			rt.top += 20;  // 행 간격 조절
+		hdc = BeginPaint(ActivatedHwndChild, &ps);
+		if (hdc != NULL) {
+			for (int i = 0; i <= child[selection].line; i++) {
+				TextOut(hdc, 0, i * 20, child[selection].str[i], _tcslen(child[selection].str[i]));
+			}
+			EndPaint(ActivatedHwndChild, &ps);
 		}
-		EndPaint(hwnd, &ps);
 		break;
+
 	case WM_CHAR:
 		hdc = GetDC(hwnd);
-		if (hwnd == ChildHwnd[num]) {
-			if (wParam == VK_BACK && count > 0) {
-				count--;
+		if (child[selection].line < 10) {
+			if (wParam == VK_BACK && child[selection].count > 0) {
+				child[selection].count--;
+				child[selection].str[child[selection].line][child[selection].count] = NULL; // 백스페이스 시 해당 위치의 문자를 '\0'으로 설정
 			}
-			else {
-				if (enterCount < 9 && count < 99) {
-					content[num][enterCount][count++] = wParam;
-					if (count >= 99) {
-						// count가 99에 도달하면 다음 행으로 이동
-						enterCount++;
-						count = 0;
-						if (enterCount >= 10) {
-							// 행이 10을 넘어가면 마지막 행을 초기화하고 이전 행들을 한 칸씩 위로 이동
-							_tcscpy_s(content[num][9], _T(""));
-							for (int i = 0; i < 9; i++) {
-								_tcscpy_s(content[num][i], content[num][i + 1]);
-							}
-							enterCount = 9;
-						}
-					}
+			else if (wParam == VK_BACK && child[selection].count == 0 && child[selection].line > 0) {
+				child[selection].line--;
+				child[selection].count = _tcslen(child[selection].str[child[selection].line]); // 이전 행의 마지막 글자부터 시작
+				if (child[selection].count > 0) {
+					child[selection].count--; // 이전 행의 마지막 글자에 대한 인덱스로 이동
+					child[selection].str[child[selection].line][child[selection].count] = NULL; // 마지막 글자를 '\0'으로 설정
 				}
 			}
+			else {
+				child[selection].str[child[selection].line][child[selection].count++] = wParam;
+			}
+			ReleaseDC(hwnd, hdc);
+			InvalidateRect(ActivatedHwndChild, NULL, TRUE);
 		}
-		content[num][enterCount][count] = NULL;
-		InvalidateRgn(hwnd, NULL, TRUE);
 		break;
+
+
+
 	case WM_KEYDOWN:
 		if (wParam == VK_RETURN) {
 			// Enter 키를 누르면 다음 행으로 이동
-			enterCount++;
-			count = 0;
-			if (enterCount >= 10) {
-				// 행이 10을 넘어가면 마지막 행을 초기화하고 이전 행들을 한 칸씩 위로 이동
-				_tcscpy_s(content[num][9], _T(""));
-				for (int i = 0; i < 9; i++) {
-					_tcscpy_s(content[num][i], content[num][i + 1]);
-				}
-				enterCount = 9;
+			child[selection].line++;
+			child[selection].count = 0;
+			if (child[selection].line < 10) {
+				child[selection].str[child[selection].line][0] = _T('\0'); // 다음 행의 첫 글자를 '\0'으로 설정 <- 엔터키 입력 시 l들어오는 에러 수정 위함
+				InvalidateRect(ActivatedHwndChild, NULL, TRUE);
 			}
-			InvalidateRgn(hwnd, NULL, TRUE);
 		}
+
 		break;
 	case WM_DESTROY:
 		return 0;

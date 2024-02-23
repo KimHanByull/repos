@@ -15,40 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="9-01-S.cpp">
+    <ClCompile Include="PR01.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="9-01-C.cpp">
+    <ClCompile Include="PR02.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="9-03-C.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="9-03-S.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="9-04-S.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="9-04-C.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="9-05-S.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="9-05-C.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="9-06-S.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="9-06-C.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="pr9-1-C.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="pr9-1-S.cpp">
+    <ClCompile Include="[W5D5]PR10_1.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

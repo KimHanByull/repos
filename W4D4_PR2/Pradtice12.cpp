@@ -39,19 +39,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 }
 
-#include <math.h>
-#define BSIZE 200
-
-struct OBJ
-{
-	char Shape = NULL;
-	int fx = 0, fy = 0;
-	int lx = 0, ly = 0;
-	COLORREF penColor = RGB(0, 0, 0);
-	COLORREF brushColor = RGB(0, 0, 0);
-
-};
-
 void OutFromFile(TCHAR filename[], HWND hwnd) {
 	FILE* fPtr;
 	HDC hdc;
@@ -65,7 +52,7 @@ void OutFromFile(TCHAR filename[], HWND hwnd) {
 	_tfopen_s(&fPtr, filename, TEXT("r"));
 #endif 
 	while (_fgetts(buffer, 1000, fPtr) != NULL) {
-		if (buffer[_tcslen(buffer)-1] == TEXT('\n'))
+		if (buffer[_tcslen(buffer) - 1] == TEXT('\n'))
 			buffer[_tcslen(buffer) - 1] = NULL;
 		TextOut(hdc, 0, line * 20, buffer, _tcslen(buffer));
 		line++;
@@ -73,6 +60,19 @@ void OutFromFile(TCHAR filename[], HWND hwnd) {
 	fclose(fPtr);
 	ReleaseDC(hwnd, hdc);
 }
+
+#include <math.h>
+#define BSIZE 200
+
+struct OBJ
+{
+	char Shape = NULL;
+	int fx = 0, fy = 0;
+	int lx = 0, ly = 0;
+	COLORREF penColor = RGB(0, 0, 0);
+	COLORREF brushColor = RGB(0, 0, 0);
+
+};
 
 BOOL InRectangle(OBJ object, int x, int y)
 {
@@ -157,7 +157,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
-
+			/*
 		//파일 열어오기 기능
 		case ID_FileOpen:
 			memset(&OFN, 0, sizeof(OPENFILENAME));
@@ -189,7 +189,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				MessageBox(hwnd, str, TEXT("저장하기 선택"), MB_OK);
 			}
 			break;
-
+			*/
 
 		//사각형 선택 기능
 		case ID_SELECT:

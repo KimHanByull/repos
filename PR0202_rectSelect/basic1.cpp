@@ -63,14 +63,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 8; i++) {
                 rectArr[i][j] = { i * BSIZE, j * BSIZE, (i + 1) * BSIZE, (j + 1) * BSIZE };
-            }
-        }
-
-        for (int j = 0; j < 4; j++) {
-            for (int i = 0; i < 8; i++) {
                 Rectangle(hdc, i * BSIZE, j * BSIZE, (i * BSIZE) + BSIZE, (j + 1) * BSIZE);
+                circlePaint[i][j] = 0;
+            
             }
         }
+ 
         EndPaint(hwnd, &ps);
         break;
 
@@ -113,8 +111,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         }
 
         ReleaseDC(hwnd, hdc);
-
-        //InvalidateRgn(hwnd, NULL, TRUE);
         break;
 
     case WM_DESTROY:

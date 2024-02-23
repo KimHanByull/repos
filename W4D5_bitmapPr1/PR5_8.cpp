@@ -40,7 +40,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 		CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
 	ShowWindow(hwnd, nCmdShow);
-	
+
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	while (GetMessage(&msg, NULL, 0, 0) > 0) {
@@ -56,39 +56,15 @@ int GetRandomIndex(int maxIndex) {
 	return rand() % maxIndex;
 }
 
-
-static POINT bitArrDiv5[5][5];
-static int bitW, bitH;
-
-void ShuffleArray(int size) {
-
-	bitW = WIDTH / size;
-	bitH = HEIGHT / size;
-
-	int randomRow = std::rand() % size;
-	int randomCol = std::rand() % size;
-
-	int rx = std::rand() % size;
-	int ry = std::rand() % size;
-
-	POINT pt;
-
-	for (int j = 0; j < size; j++) {
-		for (int i = 0; i < size; i++) {
-			bitArrDiv5[i][j] = { bitW * i, bitH * j };
-		}
-	}
+void ShuffleArray(POINT& point1, POINT& point2) {
 
 
-	for (int j = 0; j < size; j++) {
-		for (int i = 0; i < size; i++) {
-			pt = bitArrDiv5[randomCol][randomRow];
-			bitArrDiv5[randomCol][randomRow] = bitArrDiv5[rx][ry];
-			bitArrDiv5[rx][ry] = pt;
-		}
-	}
+	POINT temp = point1;
+	point1 = point2;
+	point2 = temp;
 
 }
+
 
 
 
@@ -98,10 +74,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	PAINTSTRUCT ps;
 	static HBITMAP hBitmap;
 
+	static POINT bitArrDiv3[3][3];
+	static POINT bitArrDiv4[4][4];
+	static POINT bitArrDiv5[5][5];
 
 	static int randomRow;
 	static int randomCol;
-
 
 	static char dividenum;
 
@@ -122,32 +100,35 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 		switch (dividenum) {
 		case 'T':
-			bitW = WIDTH / 3;
-			bitH = HEIGHT / 3;
-			ShuffleArray(3);
+
 			for (int j = 0; j < 3; j++) {
 				for (int i = 0; i < 3; i++) {
-					BitBlt(hdc, bitArrDiv5[i][j].x, bitArrDiv5[i][j].y, bitW, bitH, memdc, bitArrDiv5[i][j].x, bitArrDiv5[i][j].y, SRCCOPY);
+					int bitW = WIDTH / 3;
+					int bitH = HEIGHT / 3;
+					randomRow = std::rand() % 3;
+					randomCol = std::rand() % 3;
+					BitBlt(hdc, bitArrDiv3[i][j].x, bitArrDiv3[i][j].y, bitW, bitH, memdc, bitArrDiv3[randomRow][randomCol].x, bitArrDiv3[randomRow][randomCol].y, SRCCOPY);
+
 				}
-			}		
+			}
 			break;
 		case 'F':
 
 			for (int j = 0; j < 4; j++) {
 				for (int i = 0; i < 4; i++) {
-					bitW = WIDTH / 4;
-					bitH = HEIGHT / 4;
+					int bitW = WIDTH / 4;
+					int bitH = HEIGHT / 4;
 					randomRow = std::rand() % 4;
 					randomCol = std::rand() % 4;
-					BitBlt(hdc, bitArrDiv5[i][j].x, bitArrDiv5[i][j].y, bitW, bitH, memdc, bitArrDiv5[randomRow][randomCol].x, bitArrDiv5[randomRow][randomCol].y, SRCCOPY);
+					BitBlt(hdc, bitArrDiv4[i][j].x, bitArrDiv4[i][j].y, bitW, bitH, memdc, bitArrDiv4[randomRow][randomCol].x, bitArrDiv4[randomRow][randomCol].y, SRCCOPY);
 				}
 			}
 			break;
 		case 'D':
 			for (int j = 0; j < 5; j++) {
 				for (int i = 0; i < 5; i++) {
-					bitW = WIDTH / 5;
-					bitH = HEIGHT / 5;
+					int bitW = WIDTH / 5;
+					int bitH = HEIGHT / 5;
 					randomRow = std::rand() % 5;
 					randomCol = std::rand() % 5;
 					BitBlt(hdc, bitArrDiv5[i][j].x, bitArrDiv5[i][j].y, bitW, bitH, memdc, bitArrDiv5[randomRow][randomCol].x, bitArrDiv5[randomRow][randomCol].y, SRCCOPY);
@@ -174,7 +155,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 				for (int i = 0; i < 3; i++) {
 					int bitW = WIDTH / 3;
 					int bitH = HEIGHT / 3;
-					bitArrDiv5[i][j] = { bitW*i, bitH*j };
+					bitArrDiv3[i][j] = { bitW * i, bitH * j };
 				}
 			}
 
@@ -188,10 +169,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 				for (int i = 0; i < 4; i++) {
 					int bitW = WIDTH / 4;
 					int bitH = HEIGHT / 4;
-					bitArrDiv5[i][j] = { bitW * i, bitH * j };
+					bitArrDiv4[i][j] = { bitW * i, bitH * j };
 				}
 			}
-
 			dividenum = 'F';
 			break;
 
@@ -226,4 +206,3 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	return DefWindowProc(hwnd, message, wParam, lParam);
 
 }
-
