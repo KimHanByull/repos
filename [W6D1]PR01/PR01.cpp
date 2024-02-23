@@ -120,13 +120,45 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                 GetClientRect(hwnd, &rect);
                 FillRect(hdc, &rect, (HBRUSH)(COLOR_WINDOW + 1));
 
-                // 새로운 파일의 내용을 출력
-                memset(inbuff, 0, sizeof(inbuff));
-                ReadFile(hFile, inbuff, 999 * sizeof(TCHAR), &size, NULL);
-                DrawText(hdc, inbuff, (int)_tcslen(inbuff), &rect, DT_TOP | DT_LEFT);
+                // 파일 크기 확인
+                DWORD fileSize = GetFileSize(hFile, NULL);
+                if (fileSize == INVALID_FILE_SIZE) {
+                    // 파일 크기 확인에 실패했을 경우 에러 처리
+                    MessageBox(hwnd, _T("파일 크기 확인에 실패했습니다."), _T("에러"), MB_OK | MB_ICONERROR);
+                    return 0;
+                }
+
+                // 파일 크기만큼의 버퍼 할당
+                char* ansiBuffer = new char[fileSize + 1];
+                memset(ansiBuffer, 0, fileSize + 1);
+
+                // 파일 내용 읽기
+                if (ReadFile(hFile, ansiBuffer, fileSize, &size, NULL)) {
+                    // ANSI를 유니코드로 변환
+                    int unicodeBufferSize = MultiByteToWideChar(CP_ACP, 0, ansiBuffer, -1, NULL, 0);
+                    WCHAR* unicodeBuffer = new WCHAR[unicodeBufferSize];
+                    MultiByteToWideChar(CP_ACP, 0, ansiBuffer, -1, unicodeBuffer, unicodeBufferSize);
+
+                    // 유니코드 문자열 출력
+                    DrawText(hdc, unicodeBuffer, (int)wcslen(unicodeBuffer), &rect, DT_TOP | DT_LEFT);
+
+                    // 동적 할당된 메모리 해제
+                    delete[] unicodeBuffer;
+                }
+                else {
+                    // 파일 읽기에 실패했을 경우 에러 처리
+                    MessageBox(hwnd, _T("파일 읽기에 실패했습니다."), _T("에러"), MB_OK | MB_ICONERROR);
+                }
+
+                // 동적 할당된 메모리 해제
+                delete[] ansiBuffer;
 
                 ReleaseDC(hwnd, hdc);
                 CloseHandle(hFile);
+            }
+            else {
+                // 파일 열기에 실패했을 경우 에러 처리
+                MessageBox(hwnd, _T("파일 열기에 실패했습니다."), _T("에러"), MB_OK | MB_ICONERROR);
             }
             break;
 
