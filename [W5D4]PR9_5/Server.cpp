@@ -125,6 +125,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 				MessageBox(hwnd, TEXT("패배했습니다!"), TEXT("게임 종료"), MB_OK | MB_ICONINFORMATION);
 				// 게임 종료 또는 초기화 등 추가적인 로직 수행
 				EndGame(hwnd);
+				DestroyWindow(hwnd);
 			}
 
 			InvalidateRgn(hwnd, NULL, TRUE);
@@ -194,7 +195,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 								MessageBox(hwnd, TEXT("이겼습니다!"), TEXT("게임 종료"), MB_OK | MB_ICONINFORMATION);
 								// 게임 종료 또는 초기화 등 추가적인 로직 수행
 								EndGame(hwnd);
-								
+								DestroyWindow(hwnd);
 							}
 						}
 					}

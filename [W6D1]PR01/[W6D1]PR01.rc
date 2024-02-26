@@ -54,9 +54,8 @@ IDR_MENU1 MENU
 BEGIN
     POPUP "파일"
     BEGIN
-        MENUITEM "새글",                          ID_NEWFILE
-        MENUITEM "ANSITOUNICODE",               ID_AtoU
-        MENUITEM "UNICODETOANSI",               ID_UtoA
+        MENUITEM "새글(AntiToUnicode)",           ID_NEWFILE
+        MENUITEM "저장하기",                        ID_SAVE
     END
 END
 
